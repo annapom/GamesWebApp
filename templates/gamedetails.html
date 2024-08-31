@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Info</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='gamedetails.css')}}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ game.game_name }}</h1>
+        <img src="{{ game.game_link }}" alt="Game Image" style="max-width: 100%; height: auto; margin-bottom: 20px;">
+        <p><strong>Game Manufacture:</strong>"{{ game_info.game_manufacture }}"</p>
+
+        <p><strong>Main Actors in the Game:</strong></p>
+        <ul>
+            <li>{{ game_info.game_first_main_actor }}</li>
+            <li>{{ game_info.game_second_main_actor }}</li>
+            <li>{{ game_info.game_third_main_actor }}</li>
+            <li>{{ game_info.game_fourth_main_actor }}</li>
+        </ul>
+        <p><strong>Game Description:</strong> {{ game.game_description }}</p>
+        <p><strong>Year of Release:</strong> {{ game_info.game_year_release }}</p>
+    </div>
+</body>
+</html>
