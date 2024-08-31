@@ -1,0 +1,158 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Add New Game Header Styling */
+h1 {
+    font-size: 32px;
+    color: #ffffff;
+    text-align: center;
+    background-color: #3498db;
+    padding: 20px;
+    margin-top: 0;
+    margin-bottom: 30px;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+h1::before {
+    content: "🎮 ";
+    font-size: 36px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+/* Form Styling */
+form {
+    width: 80%;
+    max-width: 600px;
+    margin: 30px auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Label Styling */
+label {
+    font-weight: normal;
+    color: #555555;
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+}
+
+label:hover {
+    color: #3498db; /* Changes color when hovering */
+}
+
+label::before {
+    content: '🎮 '; /* Adds a small icon before each label */
+    color: #e74c3c; /* Icon color */
+    font-size: 18px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+/* Enhanced spacing for better alignment with input fields */
+form label {
+    margin-top: 15px;
+}
+
+/* Game General Information Label Styling */
+label.game-general-info {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+label.game-general-info::before {
+    content: "📝 "; /* Adds an icon before the section label */
+    font-size: 22px;
+    vertical-align: middle;
+    margin-right: 8px;
+    color: #e74c3c;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    width: 100%;
+    background-color: #3498db;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+/* Table Styling */
+table {
+    width: 80%;
+    max-width: 600px;
+    margin: 30px auto;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #dddddd;
+}
+
+th {
+    background-color: #3498db;
+    color: white;
+    font-weight: bold;
+}
+
+td {
+    background-color: #ecf0f1;
+}
+
+tr:hover {
+    background-color: #f1c40f;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    form, table {
+        width: 95%;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+}

@@ -1,0 +1,73 @@
+/* Reset some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif; /* A clean, modern font */
+    background-color: #f0f0f0; /* Light grey background */
+    color: #333; /* Dark grey text for readability */
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 3.5em;
+    margin-bottom: 40px;
+    color: #ff4500; /* A vibrant orange color */
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.game {
+    overflow: hidden;
+    border-radius: 12px; /* Rounded corners for a modern look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff; /* White background to make images pop */
+}
+
+.game img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.game:hover {
+    transform: translateY(-10px); /* Slight lift effect on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.game:hover img {
+    transform: scale(1.05); /* Slight zoom on image hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    .gallery {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    .gallery {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+    }
+}

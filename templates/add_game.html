@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My games</title>
+</head>
+<link href="{{ url_for('static', filename='addgamestyle.css')}}" rel="stylesheet">
+<body>
+    <h1>Add New Game</h1>
+    <form method="post">
+        <label>Game Name:</label>
+        <input type="text" name="game_name">
+        <br><br>
+        <label>Game Link:</label>
+        <input type="text" name="game_link">
+        <br><br>
+        <label>Game Description:</label>
+        <input type="text" name="game_description">
+        <br><br>
+        <label class="game-general-info">Game General Information:</label>
+        <br><br>
+        <label>Manufacture of the game:</label>
+        <input type="text" name="game_manufacture">
+        <br><br>
+        <label>Four main actors in the game:</label>
+        <input type="text" name="game_main_actors">
+        <br><br>
+        <label>Year of Game Release:</label>
+        <input type="text" name="game_year_release">
+        <br><br>
+        <input type="submit" value="Add Game">
+    </form>
+</body>
+</html>
