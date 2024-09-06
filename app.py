@@ -1,42 +1,7 @@
-from flask import Flask, request, render_template, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from flask import request, render_template, jsonify
 from datetime import datetime
-import os
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-app.secret_key = os.urandom(24)
-
-
-class Game(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    game_name = db.Column(db.String(80), unique=True, nullable=False)
-    game_link = db.Column(db.String(250), unique=False, nullable=False)
-    game_description = db.Column(db.String(250), unique=False, nullable=False)
-
-    def __str__(self):
-        return f"Game Name:{self.game_name}, Game Link:{self.game_link}, Game Description:{self.game_description}"
-
-
-class GameGeneralInfo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    game_manufacture = db.Column(db.String(80), unique=False, nullable=False)
-    game_first_main_actor = db.Column(db.String(80), unique=False, nullable=False)
-    game_second_main_actor = db.Column(db.String(80), unique=False, nullable=True)
-    game_third_main_actor = db.Column(db.String(80), unique=False, nullable=True)
-    game_fourth_main_actor = db.Column(db.String(80), unique=False, nullable=True)
-    game_year_release = db.Column(db.Date(), unique=False, nullable=False)
-
-    def __str__(self):
-        return f"Game Manufacture:{self.game_manufacture}, Game First Main Actor:{self.game_first_main_actor}," \
-               f" Game Second Main Actor:{self.game_second_main_actor}, " \
-               f" Game Third Main Actor:{self.game_third_main_actor}," \
-               f" Game Fourth Main Actor:{self.game_fourth_main_actor}," \
-               f" Game Year Release:{self.game_year_release},"
+from db_sections import Game, GameGeneralInfo, app, db, Note
 
 
 @app.route('/')
@@ -70,12 +35,20 @@ def delete_all_games():
 
 @app.route('/<int:game_id>')
 def show_game_general_info(game_id):
-    games_general_info_list = get_games_general_info_list()
-    current_game_info = games_general_info_list[game_id - 1]
+    all_games_general_info_list = get_games_general_info_list()
+    all_games_notes_list = get_all_notes_list()
+    all_games_list = get_games_list()
+
+    current_game_info = all_games_general_info_list[game_id - 1]
     print(f"current_game: {current_game_info}")
-    my_games_list = get_games_list()
-    current_game = my_games_list[game_id - 1]
-    return render_template('gamedetails.html', game=current_game, game_info=current_game_info)
+    current_game = all_games_list[game_id - 1]
+
+    if all_games_notes_list:
+        current_note = all_games_notes_list[game_id - 1]
+        print(f"current_notes: {current_note}")
+    else:
+        current_note = None
+    return render_template('gamedetails.html', game=current_game, game_info=current_game_info, note=current_note)
 
 
 @app.route('/delete_game/<int:game_id>', methods=['POST'])
@@ -150,6 +123,34 @@ def add_new_game():
                                             game_year_release=game_year_release)
     db.session.add(new_game_general_info)
     db.session.commit()
+
+
+# # API Route to add a new note
+# @app.route('/notes', methods=['POST'])
+# def add_note():
+#     data = request.get_json()
+#
+#     if not data or 'note' not in data:
+#         return jsonify({'error': 'Note content is required!'}), 400
+#
+#     # Add the new note to the list
+#     note = {
+#         'id': len(notes) + 1,
+#         'content': data['note']
+#     }
+#     notes.append(note)
+#
+#     return jsonify({'message': 'Note added successfully!', 'note': note}), 201
+
+
+def get_all_notes_list():
+    my_notes = Note.query.all()
+    print(f"Notes: {my_notes}")
+    my_notes_list = [
+        {"note_id": note.note_id, "game_id": note.game_id, "note_name": note.note_text}
+        for note in my_notes]
+    print(f"All Notes: {my_notes_list}")
+    return my_notes_list
 
 
 if __name__ == "__main__":
