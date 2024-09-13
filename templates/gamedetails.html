@@ -21,45 +21,21 @@
         </ul>
         <p><strong>Game Description:</strong> {{ game.game_description }}</p>
         <p><strong>Year of Release:</strong> {{ game_info.game_year_release }}</p>
-        <p><strong>Notes:</strong> {{ note.note_text }}</p>
 
         <!-- Note input form -->
-        <div class="note-input">
-            <textarea id="noteContent" rows="4" placeholder="Type your note here..."></textarea>
-            <button onclick="addNote()">Add Note</button>
-        </div>
+        <form action="/add_note" method="post">
+            <div class="note-input">
+                <textarea id="noteContent" name = "nm" rows="4" placeholder="Type your note here..."></textarea>
+                <button type = "submit" >Add Game Review</button>
+            </div>
+        </form>
 
-        <!-- Notes list -->
-        <ul id="notesList" class="notes-list">
-            <!-- Notes will be dynamically added here -->
+        <h2>Game Reviews</h2>
+        <ul>
+            {% for note in notes %}
+            <li>{{ note }}</li>
+            {% endfor %}
         </ul>
     </div>
-    <script>
-        // Function to add a note
-        function addNote() {
-            var noteContent = document.getElementById("noteContent").value;
-
-            if (noteContent === "") {
-                alert("Please enter a note before adding!");
-                return;
-            }
-            // Create a new list item to hold the note
-            var noteItem = document.createElement("li");
-            noteItem.className = "note-item";
-
-            // Create the content of the note
-            var noteText = document.createElement("p");
-            noteText.innerText = noteContent;
-
-            // Append title, content, and delete button to the note item
-            noteItem.appendChild(noteText);
-
-            // Append the note item to the notes list
-            document.getElementById("notesList").appendChild(noteItem);
-
-            // Clear the textarea
-            document.getElementById("noteContent").value = "";
-        }
-    </script>
 </body>
 </html>

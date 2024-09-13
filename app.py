@@ -2,6 +2,7 @@ from flask import request, render_template, jsonify
 from datetime import datetime
 
 from db_sections import Game, GameGeneralInfo, app, db, Note
+from notes import get_game_notes_per_game_id
 
 
 @app.route('/')
@@ -33,22 +34,29 @@ def delete_all_games():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route('/delete_all_notes', methods=['DELETE'])
+def delete_all_notes():
+    try:
+        num_rows_deleted = db.session.query(Note).delete()
+        db.session.commit()
+        return jsonify({"message": f"Deleted {num_rows_deleted} notes"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+
 @app.route('/<int:game_id>')
 def show_game_general_info(game_id):
     all_games_general_info_list = get_games_general_info_list()
-    all_games_notes_list = get_all_notes_list()
+    current_game_notes_list = get_game_notes_per_game_id(game_id)
     all_games_list = get_games_list()
 
     current_game_info = all_games_general_info_list[game_id - 1]
     print(f"current_game: {current_game_info}")
     current_game = all_games_list[game_id - 1]
 
-    if all_games_notes_list:
-        current_note = all_games_notes_list[game_id - 1]
-        print(f"current_notes: {current_note}")
-    else:
-        current_note = None
-    return render_template('gamedetails.html', game=current_game, game_info=current_game_info, note=current_note)
+    return render_template('gamedetails.html', game=current_game, game_info=current_game_info,
+                           notes=current_game_notes_list)
 
 
 @app.route('/delete_game/<int:game_id>', methods=['POST'])
@@ -125,32 +133,27 @@ def add_new_game():
     db.session.commit()
 
 
-# # API Route to add a new note
-# @app.route('/notes', methods=['POST'])
-# def add_note():
-#     data = request.get_json()
-#
-#     if not data or 'note' not in data:
-#         return jsonify({'error': 'Note content is required!'}), 400
-#
-#     # Add the new note to the list
-#     note = {
-#         'id': len(notes) + 1,
-#         'content': data['note']
-#     }
-#     notes.append(note)
-#
-#     return jsonify({'message': 'Note added successfully!', 'note': note}), 201
+@app.route('/add_note', methods=['GET', 'POST'])
+def add_note():
+    if request.method == 'POST':
+        data = request.form['nm']
+        url = request.referrer
+        game_id = int(url.split("/")[3])
+        print(f"Data={data}")
+        new_note = Note(game_id=game_id, note_text=data)
+        db.session.add(new_note)
+        db.session.commit()
+        all_games_general_info_list = get_games_general_info_list()
+        current_game_notes_list = get_game_notes_per_game_id(game_id)
+        all_games_list = get_games_list()
 
-
-def get_all_notes_list():
-    my_notes = Note.query.all()
-    print(f"Notes: {my_notes}")
-    my_notes_list = [
-        {"note_id": note.note_id, "game_id": note.game_id, "note_name": note.note_text}
-        for note in my_notes]
-    print(f"All Notes: {my_notes_list}")
-    return my_notes_list
+        current_game_info = all_games_general_info_list[game_id - 1]
+        print(f"current_game: {current_game_info}")
+        current_game = all_games_list[game_id - 1]
+        return render_template('gamedetails.html', game=current_game, game_info=current_game_info,
+                               notes=current_game_notes_list)
+    elif request.method == 'GET':
+        return render_template('success.html')
 
 
 if __name__ == "__main__":
